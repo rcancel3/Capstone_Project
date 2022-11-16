@@ -140,28 +140,19 @@ def clean_string(text):
     return text
 
 
-class Database():
-    def __init__(self, db_name='database.db'):
-        self.conn = sqlite3.connect(db_name)
-
-    def query(self, statement):
-        return pd.read_sql(statement, self.conn)
-
-
 class Business():
     def __init__(self, info, reviews):
         self.name = info['name'].iloc[0]
-        self.info = info
         self.reviews = reviews
 
     def __set_months(self):
         # resturant_data['serial_date'] is Year-Month
-        self.data['serial_date'] = \
-            pd.to_datetime(self.data['date']).dt.strftime('%Y-%m')
+        self.reviews['serial_date'] = \
+            pd.to_datetime(self.reviews['date']).dt.strftime('%Y-%m')
 
         # min, max date in the dataset
-        self.__min_date = self.data['serial_date'].min()
-        self.__max_date = self.data['serial_date'].max()
+        self.__min_date = self.reviews['serial_date'].min()
+        self.__max_date = self.reviews['serial_date'].max()
 
         # create a list of all the months in the dataset
         self.months = \
@@ -183,7 +174,7 @@ class Business():
     def __gather_stat(self):
 
         for month in self.months:
-            df_month = self.data.query('serial_date == @month')
+            df_month = self.reviews.query('serial_date == @month')
             self.stat_df.loc[month, 'row_count'] = \
                 len(df_month)
 
@@ -205,11 +196,10 @@ class Corpus:
     def __init__(self):
         self.__business = dict()
 
-    @property
-    def business_names(self):
-        return self.data['name'].unique().tolist()
-
     def add_business(self, business: Business):
+        self.__business[business.name] = business
+
+    def __setitem__(self, business: Business):
         self.__business[business.name] = business
 
     def __getitem__(self, business_name):
