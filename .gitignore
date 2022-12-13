@@ -1,0 +1,4 @@
+.env
+venv/
+raw_data/
+database.db
