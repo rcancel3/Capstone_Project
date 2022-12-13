@@ -148,7 +148,7 @@ Yelp Academic Dataset. https://www.yelp.com/dataset
 
 ## License
 
-Copyright (c) 2022, , Christopher Robinson, and Jose Luis Estrada.
+Copyright (c) 2022, , Roberto Cancel, Nima Tamin Taghavi, Martin Zagari.
 
 All source code and software in this repository are made available under the terms of the MIT license.
 
